@@ -1,21 +1,38 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
 export class News extends Component {
+    constructor() {
+        super();
+        console.log('constructor');
+        this.state = {
+            articles: [],
+            loading:false
+        }
+    }
+    async componentDidMount(){
+        console.log('cdm');
+        let url=`https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=49a7d9961bd74a909ee04c8b6dea5247`;
+        let data=await fetch(url);
+        let parsedData=await data.json();
+        console.log(parsedData);
+        this.setState({articles:parsedData.articles});
+    }
     render() {
+        console.log('render')
         return (
             <div className="container my-3">
                 <h2>SendNewwzs - Top Headlines</h2>
                 <div className="row">
-                    <div className="col-md-3"><NewsItem title="mytitle" description="my desc" newsUrl="todo" imageUrl="https://s.yimg.com/uu/api/res/1.2/w5eokYEru719pqXSfleocA--~B/Zmk9ZmlsbDtoPTYzMDtweW9mZj0wO3c9MTIwMDthcHBpZD15dGFjaHlvbg--/https://media-mbst-pub-ue1.s3.amazonaws.com/creatr-uploaded-images/2023-03/989f60f0-ce54-11ed-ae79-580cd063061e.cf.jpg"/></div>
-                    <div className="col-md-3"><NewsItem title="mytitle" description="my desc" imageUrl="https://images.mktw.net/im-794600/social"/></div>
-                    <div className="col-md-3"><NewsItem title="mytitle" description="my desc" /></div>
+                    {this.state.articles.map((element)=>{
+                        return <div className="col-md-4" key={element.url}>
+                            <NewsItem title={element.title?element.title.slice(0,45):""} description={element.description?element.description.slice(0,88):""} newsUrl={element.url} imageUrl={element.urlToImage?element.urlToImage:"https://www.openpr.com/wiki/images/56-400x300_4851"}/>
+                            </div>
+                    })}
+                    
+                    
                     
                 </div>
-                <div className="row my-3">
-                    <div className="col-md-3"><NewsItem title="mytitle" description="my desc" /></div>
-                    <div className="col-md-3"><NewsItem title="mytitle" description="my desc" /></div>
-                    <div className="col-md-3"><NewsItem title="mytitle" description="my desc" /></div>
-                </div>
+                
             </div>
         )
     }
