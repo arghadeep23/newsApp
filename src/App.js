@@ -29,7 +29,7 @@ export default class App extends Component {
     console.log(`Keyword : ${keyword}`);
   }
   c='Argha'
-  apiKey=process.env.REACT_APP_NEWS_API;
+  apiKey=process.env.REACT_APP_newsapp;
   render() {
     return (
       <Router>

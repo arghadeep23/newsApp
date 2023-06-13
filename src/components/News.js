@@ -31,7 +31,7 @@ export class News extends Component {
         console.log('cdm');
         const { country, pageSize, category } = this.props;
         console.log('unchanged')
-        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=49a7d9961bd74a909ee04c8b6dea5247&page=1&pageSize=${pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${this.props.apiKey}&page=1&pageSize=${pageSize}`;
         if (this.props.searchKeyword) {
             url += `&q=${this.props.searchKeyword}`;
             console.log('Changed url');
@@ -50,7 +50,7 @@ export class News extends Component {
         this.props.setProgress(10);
         const { country, pageSize, category } = this.props;
         console.log('changed')
-        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=49a7d9961bd74a909ee04c8b6dea5247&page=${this.state.page}&pageSize=${pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${pageSize}`;
         if (this.props.searchKeyword) {
             url += `&q=${this.props.searchKeyword}`;
             console.log('Changed url');
@@ -73,7 +73,7 @@ export class News extends Component {
     fetchMoreData = async () => {
         this.setState({ page: this.state.page + 1 });
         const { country, pageSize, category } = this.props;
-        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=49a7d9961bd74a909ee04c8b6dea5247&page=${this.state.page+1}&pageSize=${pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=${this.props.apiKey}&page=${this.state.page+1}&pageSize=${pageSize}`;
         if (this.props.searchKeyword) {
             url += `&q=${this.props.searchKeyword}`;
             console.log('Changed url');
