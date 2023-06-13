@@ -3,6 +3,7 @@ import NewsItem from './NewsItem'
 import Spinner from './Spinner'
 import InfiniteScroll from "react-infinite-scroll-component";
 import PropTypes from 'prop-types'
+
 export class News extends Component {
     constructor(props) {
         super(props);
@@ -26,35 +27,43 @@ export class News extends Component {
         category: "all categories"
     }
     async componentDidMount() {
+        this.props.setProgress(10);
         console.log('cdm');
         const { country, pageSize, category } = this.props;
         console.log('unchanged')
-        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=afb32775f247499f8941d043a10c82e2&page=1&pageSize=${pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=49a7d9961bd74a909ee04c8b6dea5247&page=1&pageSize=${pageSize}`;
         if (this.props.searchKeyword) {
             url += `&q=${this.props.searchKeyword}`;
             console.log('Changed url');
         }
         this.setState({ loading: true })
         let data = await fetch(url);
+        this.props.setProgress(30);
         let parsedData = await data.json();
+        this.props.setProgress(60)
         let newTotalPage = Math.ceil(parsedData.totalResults / this.props.pageSize);
         console.log(parsedData);
         this.setState({ articles: parsedData.articles, totalPages: newTotalPage, loading: false, totalResults: parsedData.totalResults });
+        this.props.setProgress(100);
     }
     async updateNews() {
+        this.props.setProgress(10);
         const { country, pageSize, category } = this.props;
         console.log('changed')
-        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=afb32775f247499f8941d043a10c82e2&page=${this.state.page}&pageSize=${pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=49a7d9961bd74a909ee04c8b6dea5247&page=${this.state.page}&pageSize=${pageSize}`;
         if (this.props.searchKeyword) {
             url += `&q=${this.props.searchKeyword}`;
             console.log('Changed url');
         }
         this.setState({ loading: true })
         let data = await fetch(url);
+        this.props.setProgress(30);
         let parsedData = await data.json();
+        this.props.setProgress(60);
         let newTotalPage = Math.ceil(parsedData.totalResults / this.props.pageSize);
         console.log(parsedData);
         this.setState({ articles: parsedData.articles, totalPages: newTotalPage, loading: false, totalResults: parsedData.totalResults });
+        this.props.setProgress(100);
     }
     async componentDidUpdate(prevProps) {
         if (prevProps.searchKeyword !== this.props.searchKeyword) {
@@ -64,7 +73,7 @@ export class News extends Component {
     fetchMoreData = async () => {
         this.setState({ page: this.state.page + 1 });
         const { country, pageSize, category } = this.props;
-        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=afb32775f247499f8941d043a10c82e2&page=${this.state.page+1}&pageSize=${pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&apiKey=49a7d9961bd74a909ee04c8b6dea5247&page=${this.state.page+1}&pageSize=${pageSize}`;
         if (this.props.searchKeyword) {
             url += `&q=${this.props.searchKeyword}`;
             console.log('Changed url');
@@ -79,7 +88,7 @@ export class News extends Component {
         console.log('render')
         return (
             <div className="container my-3">
-                <h2 className="text-center" style={{ margin: '35px 0px' }}>NexusNews - Top Headlines From {this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)}</h2>
+                <h2 className="text-center" style={{ margin: '35px 0px' }}>NexusNews - Top {this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)} Headlines</h2>
                 {this.state.loading && <Spinner />}
                 <InfiniteScroll
                     dataLength={this.state.articles.length}
